@@ -6,7 +6,7 @@ mode = True
 ix,iy = -1,-1
 sizeParameter = 0
 
-def draw_circle(event,x,y,flags,param):
+def draw(event,x,y,flags,param):
     global ix,iy,drawing,mode,sizeParameter
     global r,g,b
     if event == cv2.EVENT_LBUTTONDOWN:
@@ -33,15 +33,15 @@ def nothing(x):
 
 img = np.zeros((512,512,3), np.uint8)
 cv2.namedWindow('image')
-
-
+sampleColor = np.zeros((50,50,3),np.uint8)
+cv2.namedWindow('sampleColor')
 cv2.createTrackbar('R','image',0,255,nothing)
 cv2.createTrackbar('G','image',0,255,nothing)
 cv2.createTrackbar('B','image',0,255,nothing)
 cv2.createTrackbar('SIZE','image',0,100,nothing)
-cv2.setMouseCallback('image',draw_circle)
+cv2.setMouseCallback('image',draw)
 while(1):
-    
+    cv2.imshow('sampleColor',sampleColor)
     cv2.imshow('image',img)
     k = cv2.waitKey(1) & 0xFF
     if k == ord('m'):
@@ -53,5 +53,6 @@ while(1):
     g=cv2.getTrackbarPos('G','image')
     b=cv2.getTrackbarPos('B','image')
     sizeParameter=cv2.getTrackbarPos('SIZE','image')
-
+    sampleColor[:]=[b,g,r]
+cv2.imwrite('image.jpg',img)
 cv2.destroyAllWindows()
